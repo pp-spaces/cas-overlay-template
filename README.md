@@ -1,12 +1,13 @@
-CAS Overlay Template [![Build Status](https://travis-ci.org/apereo/cas-overlay-template.svg?branch=master)](https://travis-ci.org/apereo/cas-overlay-template)
-=======================
+# CAS Overlay Template
+
+[![Build Status](https://travis-ci.org/pp-spaces/cas-overlay-template.svg?branch=master)](https://travis-ci.org/apereo/cas-overlay-template)
 
 Generic CAS WAR overlay to exercise the latest versions of CAS. This overlay could be freely used as a starting template for local CAS war overlays.
 
 # Versions
 
-- CAS `6.1.x`
-- JDK `11`
+-   CAS `6.1.x`
+-   JDK `11`
 
 # Overview
 
@@ -49,13 +50,13 @@ To unzip and explode the CAS web application file and the internal resources jar
 
 # Configuration
 
-- The `etc` directory contains the configuration files and directories that need to be copied to `/etc/cas/config`.
+-   The `etc` directory contains the configuration files and directories that need to be copied to `/etc/cas/config`.
 
 ```bash
 ./gradlew[.bat] copyCasConfiguration
 ```
 
-- The specifics of the build are controlled using the `gradle.properties` file.
+-   The specifics of the build are controlled using the `gradle.properties` file.
 
 ## Adding Modules
 
@@ -87,17 +88,17 @@ Same strategy applies to Windows too, provided you switch `$HOME` to its equival
 
 # Deployment
 
-- Create a keystore file `thekeystore` under `/etc/cas`. Use the password `changeit` for both the keystore and the key/certificate entries. This can either be done using the JDK's `keytool` utility or via the following command:
+-   Create a keystore file `thekeystore` under `/etc/cas`. Use the password `changeit` for both the keystore and the key/certificate entries. This can either be done using the JDK's `keytool` utility or via the following command:
 
 ```bash
 ./gradlew[.bat] createKeystore
 ```
 
-- Ensure the keystore is loaded up with keys and certificates of the server.
+-   Ensure the keystore is loaded up with keys and certificates of the server.
 
 On a successful deployment via the following methods, CAS will be available at:
 
-* `https://cas.server.name:8443/cas`
+-   `https://cas.server.name:8443/cas`
 
 ## Executable WAR
 
@@ -113,7 +114,7 @@ Debug the CAS web application as an executable WAR:
 ./gradlew[.bat] debug
 ```
 
-Run the CAS web application as a *standalone* executable WAR:
+Run the CAS web application as a _standalone_ executable WAR:
 
 ```bash
 ./gradlew[.bat] clean executable
