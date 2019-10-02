@@ -2,7 +2,7 @@
 
 image_org=${DOCKER_ORG:-org.apereo.cas}
 image_version=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
-image_tag="$image_org/cas:$image_tag"
+image_tag="$image_org/cas:$image_version"
 
 echo "Building CAS docker image tagged as [$image_tag]"
 # read -p "Press [Enter] to continue..." any_key;
