@@ -58,9 +58,11 @@ jobs:
       script: docker-compose build
       name: "Build Docker Image via Docker Compose"
     - stage: docker
-      script: ./docker-build.sh
-      name: "Build Docker Image"
+      script:
+        - ./docker-build.sh
+        - ./docker-push.sh
+      name: "Build & Push Docker Image"
       ############################################
-    - stage: docker
-      script: ./docker-push.sh
-      name: "Upload Docker Image"
+    # - stage: docker
+    #   script: ./docker-push.sh
+    #   name: "Upload Docker Image"
