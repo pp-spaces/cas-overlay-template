@@ -38,32 +38,40 @@ stages:
 jobs:
   include:
     - stage: build
-      script: ./gradlew clean build --stacktrace --no-daemon --refresh-dependencies -Dorg.gradle.internal.http.socketTimeout=600000 -Dorg.gradle.internal.http.connectionTimeout=600000
       name: "Build CAS"
+      script:
+        - ./gradlew clean build \
+          --stacktrace --no-daemon --refresh-dependencies \
+          -Dorg.gradle.internal.http.socketTimeout=600000 \
+          -Dorg.gradle.internal.http.connectionTimeout=600000
       ############################################
     - stage: validate
-      script: ./gradlew downloadShell
       name: "Download CAS Shell"
+      script: ./gradlew downloadShell
     - stage: validate
-      script: ./gradlew listTemplateViews
       name: "List CAS Template Views"
+      script: ./gradlew listTemplateViews
     - stage: validate
-      script: ./gradlew explodeWar
       name: "Unzip CAS Web Application"
+      script: ./gradlew explodeWar
       ############################################
     - stage: docker
-      script: ./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies
       name: "Build Docker Image via Jib"
+      script:
+        - ./gradlew build jibDockerBuild \
+          --stacktrace \
+          --no-daemon \
+          --refresh-dependencies
     - stage: docker
-      script: docker-compose build
       name: "Build Docker Image via Docker Compose"
+      script: docker-compose build
     - stage: docker
+      name: "Build & Push Docker Image"
       script:
         - ./docker-build.sh
         - docker images
         - ./docker-push.sh
-      name: "Build & Push Docker Image"
       ############################################
     # - stage: docker
-    #   script: ./docker-push.sh
     #   name: "Upload Docker Image"
+    #   script: ./docker-push.sh
