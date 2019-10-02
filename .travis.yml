@@ -39,11 +39,7 @@ jobs:
   include:
     - stage: build
       name: "Build CAS"
-      script:
-        - ./gradlew clean build \
-          --stacktrace --no-daemon --refresh-dependencies \
-          -Dorg.gradle.internal.http.socketTimeout=600000 \
-          -Dorg.gradle.internal.http.connectionTimeout=600000
+      script: ./gradlew clean build --stacktrace --no-daemon --refresh-dependencies -Dorg.gradle.internal.http.socketTimeout=600000 -Dorg.gradle.internal.http.connectionTimeout=600000
       ############################################
     - stage: validate
       name: "Download CAS Shell"
@@ -57,11 +53,7 @@ jobs:
       ############################################
     - stage: docker
       name: "Build Docker Image via Jib"
-      script:
-        - ./gradlew build jibDockerBuild \
-          --stacktrace \
-          --no-daemon \
-          --refresh-dependencies
+      script: ./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies
     - stage: docker
       name: "Build Docker Image via Docker Compose"
       script: docker-compose build
