@@ -37,8 +37,7 @@ COPY --from=overlay cas-overlay/build/libs/cas.war cas-overlay/
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV PATH $PATH:$JAVA_HOME/bin:.
-WORKDIR cas-overlay
+WORKDIR /cas-overlay
 
 EXPOSE 8080 8443
-CMD ["./gradlew", "clean", "executable"]
-# ENTRYPOINT ["java", "-server", "-noverify", "-Xmx2048M", "-jar", "cas.war"]
+ENTRYPOINT ["java", "-server", "-noverify", "-Xmx2048M", "-jar", "cas.war"]
