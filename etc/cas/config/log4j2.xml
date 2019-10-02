@@ -2,7 +2,7 @@
 <!-- Specify the refresh internal in seconds. -->
 <Configuration monitorInterval="5" packages="org.apereo.cas.logging">
     <Properties>
-        <Property name="baseDir">/var/log</Property>
+        <Property name="baseDir">/etc/cas/logs</Property>
 
         <Property name="cas.log.level">info</Property>
         <Property name="spring.webflow.log.level">warn</Property>
@@ -20,8 +20,7 @@
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="%highlight{%d %p [%c] - &lt;%m&gt;}%n"/>
         </Console>
-        <RollingFile name="file" fileName="${baseDir}/cas.log" append="true"
-                     filePattern="${baseDir}/cas-%d{yyyy-MM-dd-HH}-%i.log">
+        <RollingFile name="file" fileName="${baseDir}/cas.log" append="true" filePattern="${baseDir}/cas-%d{yyyy-MM-dd-HH}-%i.log">
             <PatternLayout pattern="%d %p [%c] - &lt;%m&gt;%n"/>
             <Policies>
                 <OnStartupTriggeringPolicy />
@@ -29,8 +28,7 @@
                 <TimeBasedTriggeringPolicy />
             </Policies>
         </RollingFile>
-        <RollingFile name="auditlogfile" fileName="${baseDir}/cas_audit.log" append="true"
-                     filePattern="${baseDir}/cas_audit-%d{yyyy-MM-dd-HH}-%i.log">
+        <RollingFile name="auditlogfile" fileName="${baseDir}/cas_audit.log" append="true" filePattern="${baseDir}/cas_audit-%d{yyyy-MM-dd-HH}-%i.log">
             <PatternLayout pattern="%d %p [%c] - %m%n"/>
             <Policies>
                 <OnStartupTriggeringPolicy />
@@ -62,8 +60,7 @@
 
         <AsyncLogger name="org.springframework.boot" level="${sys:spring.boot.log.level" includeLocation="true"/>
         <AsyncLogger name="org.springframework.boot.context.embedded" level="info" includeLocation="true" />
-        <AsyncLogger name="org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration"
-        level="${sys:spring.security.log.level}" includeLocation="true" />
+        <AsyncLogger name="org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration" level="${sys:spring.security.log.level}" includeLocation="true" />
         <AsyncLogger name="org.springframework.boot.autoconfigure.security" level="${sys:spring.security.log.level}" includeLocation="true"/>
         <AsyncLogger name="org.springframework.boot.devtools" level="off" includeLocation="true"/>
 
@@ -102,7 +99,7 @@
         <AsyncLogger name="com.hazelcast" level="${sys:hazelcast.log.level}" includeLocation="true"/>
 
         <!-- Log audit to all root appenders, and also to audit log (additivity is not false) -->
-        <AsyncLogger name="org.apereo.inspektr.audit.support" level="info" includeLocation="true" >
+        <AsyncLogger name="org.apereo.inspektr.audit.support" level="info" includeLocation="true">
             <AppenderRef ref="casAudit"/>
         </AsyncLogger>
 
