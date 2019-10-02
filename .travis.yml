@@ -60,6 +60,7 @@ jobs:
     - stage: docker
       script:
         - ./docker-build.sh
+        - docker images
         - ./docker-push.sh
       name: "Build & Push Docker Image"
       ############################################
