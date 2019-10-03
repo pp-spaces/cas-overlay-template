@@ -25,9 +25,6 @@ docker:
 		@echo "Available Docker Images"
 		docker images
 
-		@echo "Push Docker Image"
-		./docker-push.sh
-
 dockerJib:
 		@echo "Build Docker Image via Jib"
 		./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies
@@ -35,3 +32,7 @@ dockerJib:
 dockerCompose:
 		@echo "Build Docker Image via Docker Compose"
 		docker-compose build
+
+dockerPush:
+		@echo "Push Docker Image"
+		./docker-push.sh
