@@ -1,5 +1,5 @@
-# FROM adoptopenjdk/openjdk11:alpine-slim AS overlay
-FROM openjdk:11-jdk-slim as overlay
+FROM adoptopenjdk/openjdk11:alpine-slim AS overlay
+# FROM openjdk:11-jdk-slim as overlay
 
 RUN mkdir -p cas-overlay
 COPY ./src cas-overlay/src/
@@ -16,8 +16,8 @@ RUN mkdir -p ~/.gradle \
 RUN cd cas-overlay \
     && ./gradlew clean build --parallel;
 
-# FROM adoptopenjdk/openjdk11:alpine-jre AS cas
-FROM openjdk:11-jdk-slim as cas
+FROM adoptopenjdk/openjdk11:alpine-jre AS cas
+# FROM openjdk:11-jdk-slim as cas
 
 LABEL "Organization"="Apereo"
 LABEL "Description"="Apereo CAS"
