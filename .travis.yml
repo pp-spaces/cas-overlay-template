@@ -65,18 +65,22 @@ jobs:
         - "./docker-build.sh"
         - docker images
         - "./docker-push.sh"
-before_deploy:
-  # Set up git user name and tag this commit
-  - TRAVIS_TAG=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
-  - git config --local user.name "$GIT_USER_NAME"
-  - git config --local user.email "GIT_USER_EMAIL"
-  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-  - git tag $TRAVIS_TAG
-deploy:
-  provider: releases
-  api_key:
-    secure: S3O243fPuJth0OvOGCO5M0McxJbZTiEnQNhIIFY9bzxXaNKXNPJV/waAjhhscGanfN87XlyMuqgpI2IfP4lDNXeYyd3/TMrcnh/KsfJG5+Ov2TQOLYhayYJTCuovX6N3z76z7YWcXeCmnXb1X0x3/jTEie/DF0AAoBwDfTi5issgUU+/7miAYYRkhaakYrdnyJDo3ehijKzytpR61D/HUpgMfQbf2ZsCefB9C/sFi6u/iTSJwfREevVXYnJyvwYqcdJr6FJUPzDv/GNtlF0VE+RSNhPnTN6k4B4BW9pmFlo84TJIiWLWF/+fLEkIWCx5rej4s7Ad9gYegWla9i45sxPazBUnfeTkNaBrVG/NKJbWqRUWGIs46psKnwuxDusupU01exQBIxG5EjBRLl+9hwblhEvtKTAHSnnB5PuzHtIo1mtxgxILQPm3o1H3S2UjLUSpYHP1Ty9MSrJ9+I+jaGOG9xmzB6+pWcbkPp1+NrDvbDdavzXj1YPf9WsN/phpt3dSdAJKOzYxI+QYQVOH3+AWgxelzvJdvOiEKEwSPOWp1rfMaTEgvYQlZcWNiEojNYdibO2rqiBloKXH7+zVTsnEbx1hZGJmQvoVrb25ot7C78iLfiqkzgoPgEYysODKw0a2eP5HNPQJAggbFX4v15CV15jJC/V0OjErIN90Qmk=
-  file: "/cas-overlay/cas.war"
-  on:
-    tags: true
-    repo: pp-spaces/cas-overlay-template
+    - stage: deploy
+      name: "Deploy"
+      script: skip
+      before_deploy:
+        - TRAVIS_TAG=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
+        - TRAVIS_TAG_DATE=$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
+        # Set up git user name and tag this commit
+        - git config --local user.name "$GIT_USER_NAME"
+        - git config --local user.email "GIT_USER_EMAIL"
+        - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+        - git tag $TRAVIS_TAG
+      deploy: &github
+        provider: releases
+        api_key:
+          secure: S3O243fPuJth0OvOGCO5M0McxJbZTiEnQNhIIFY9bzxXaNKXNPJV/waAjhhscGanfN87XlyMuqgpI2IfP4lDNXeYyd3/TMrcnh/KsfJG5+Ov2TQOLYhayYJTCuovX6N3z76z7YWcXeCmnXb1X0x3/jTEie/DF0AAoBwDfTi5issgUU+/7miAYYRkhaakYrdnyJDo3ehijKzytpR61D/HUpgMfQbf2ZsCefB9C/sFi6u/iTSJwfREevVXYnJyvwYqcdJr6FJUPzDv/GNtlF0VE+RSNhPnTN6k4B4BW9pmFlo84TJIiWLWF/+fLEkIWCx5rej4s7Ad9gYegWla9i45sxPazBUnfeTkNaBrVG/NKJbWqRUWGIs46psKnwuxDusupU01exQBIxG5EjBRLl+9hwblhEvtKTAHSnnB5PuzHtIo1mtxgxILQPm3o1H3S2UjLUSpYHP1Ty9MSrJ9+I+jaGOG9xmzB6+pWcbkPp1+NrDvbDdavzXj1YPf9WsN/phpt3dSdAJKOzYxI+QYQVOH3+AWgxelzvJdvOiEKEwSPOWp1rfMaTEgvYQlZcWNiEojNYdibO2rqiBloKXH7+zVTsnEbx1hZGJmQvoVrb25ot7C78iLfiqkzgoPgEYysODKw0a2eP5HNPQJAggbFX4v15CV15jJC/V0OjErIN90Qmk=
+        file: "cas.war"
+        on:
+          tags: true
+          repo: pp-spaces/cas-overlay-template
