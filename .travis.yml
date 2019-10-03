@@ -53,18 +53,16 @@ jobs:
       ############################################
     - stage: docker
       name: "Build Docker Image via Jib"
+      script: ./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies
+    - stage: docker
+      name: "Build Docker Image via Docker Compose"
+      script: docker-compose build
+    - stage: docker
+      name: "Build & Push Docker Image"
       script:
-        - ./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies
+        - ./docker-build.sh
+        - docker images
         - ./docker-push.sh
-    # - stage: docker
-    #   name: "Build Docker Image via Docker Compose"
-    #   script: docker-compose build
-    # - stage: docker
-    #   name: "Build & Push Docker Image"
-    #   script:
-    #     - ./docker-build.sh
-    #     - docker images
-    #     - ./docker-push.sh
     ############################################
     # - stage: docker
     #   name: "Upload Docker Image"
