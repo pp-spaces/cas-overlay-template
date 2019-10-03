@@ -69,14 +69,16 @@ jobs:
       name: "Deploy to GitHub Release"
       script: skip
       before_deploy:
-        # - TRAVIS_TAG=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
-        # - TRAVIS_TAG_DATE=$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
-        # # Set up git user name and tag this commit
-        # - git config --local user.name "$GIT_USER_NAME"
-        # - git config --local user.email "GIT_USER_EMAIL"
-        # - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-        # - git tag $TRAVIS_TAG
-        - "./gradlew clean build --parallel"
+        # Set up git user name and tag this commit
+        - git config --local user.name "$GIT_USER_NAME"
+        - git config --local user.email "GIT_USER_EMAIL"
+        # Set up Release tag
+        - CAS_VERSION=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
+        - CAS_BUILD_DATE=$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
+        - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+        # Build application
+        - ./gradlew clean build --parallel
+        - git tag "$CAS_VERSION-$TRAVIS_TAG"
       deploy: &github
         provider: releases
         skip-cleanup: true
