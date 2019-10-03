@@ -15,14 +15,16 @@ cache:
   bundler: false
   cargo: false
   directories:
-    - $HOME/.m2
-    - $HOME/.npm/
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+    - "$HOME/.m2"
+    - "$HOME/.npm/"
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
 env:
   global:
-    - JAVA_OPTS="-Xms512m -Xmx4048m -Xss128m -XX:ReservedCodeCacheSize=512m -XX:+UseG1GC -Xverify:none -server"
-    - GRADLE_OPTS="-Xms512m -Xmx1024m -Xss128m -XX:ReservedCodeCacheSize=512m -XX:+UseG1GC -Xverify:none -server"
+    - JAVA_OPTS="-Xms512m -Xmx4048m -Xss128m -XX:ReservedCodeCacheSize=512m -XX:+UseG1GC
+      -Xverify:none -server"
+    - GRADLE_OPTS="-Xms512m -Xmx1024m -Xss128m -XX:ReservedCodeCacheSize=512m -XX:+UseG1GC
+      -Xverify:none -server"
 jdk:
   - openjdk11
 before_install:
@@ -38,32 +40,35 @@ stages:
 jobs:
   include:
     - stage: build
-      name: "Build CAS"
-      script: ./gradlew clean build --stacktrace --no-daemon --refresh-dependencies -Dorg.gradle.internal.http.socketTimeout=600000 -Dorg.gradle.internal.http.connectionTimeout=600000
-      ############################################
+      name: Build CAS
+      script:
+        "./gradlew clean build --stacktrace --no-daemon --refresh-dependencies
+        -Dorg.gradle.internal.http.socketTimeout=600000 -Dorg.gradle.internal.http.connectionTimeout=600000"
     - stage: validate
-      name: "Download CAS Shell"
-      script: ./gradlew downloadShell
+      name: Download CAS Shell
+      script: "./gradlew downloadShell"
     - stage: validate
-      name: "List CAS Template Views"
-      script: ./gradlew listTemplateViews
+      name: List CAS Template Views
+      script: "./gradlew listTemplateViews"
     - stage: validate
-      name: "Unzip CAS Web Application"
-      script: ./gradlew explodeWar
-      ############################################
+      name: Unzip CAS Web Application
+      script: "./gradlew explodeWar"
     - stage: docker
-      name: "Build Docker Image via Jib"
-      script: ./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies
+      name: Build Docker Image via Jib
+      script: "./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies"
     - stage: docker
-      name: "Build Docker Image via Docker Compose"
+      name: Build Docker Image via Docker Compose
       script: docker-compose build
     - stage: docker
-      name: "Build & Push Docker Image"
+      name: Build & Push Docker Image
       script:
-        - ./docker-build.sh
+        - "./docker-build.sh"
         - docker images
-        - ./docker-push.sh
-    ############################################
-    # - stage: docker
-    #   name: "Upload Docker Image"
-    #   script: ./docker-push.sh
+        - "./docker-push.sh"
+deploy:
+  provider: releases
+  api_key:
+    secure: S3O243fPuJth0OvOGCO5M0McxJbZTiEnQNhIIFY9bzxXaNKXNPJV/waAjhhscGanfN87XlyMuqgpI2IfP4lDNXeYyd3/TMrcnh/KsfJG5+Ov2TQOLYhayYJTCuovX6N3z76z7YWcXeCmnXb1X0x3/jTEie/DF0AAoBwDfTi5issgUU+/7miAYYRkhaakYrdnyJDo3ehijKzytpR61D/HUpgMfQbf2ZsCefB9C/sFi6u/iTSJwfREevVXYnJyvwYqcdJr6FJUPzDv/GNtlF0VE+RSNhPnTN6k4B4BW9pmFlo84TJIiWLWF/+fLEkIWCx5rej4s7Ad9gYegWla9i45sxPazBUnfeTkNaBrVG/NKJbWqRUWGIs46psKnwuxDusupU01exQBIxG5EjBRLl+9hwblhEvtKTAHSnnB5PuzHtIo1mtxgxILQPm3o1H3S2UjLUSpYHP1Ty9MSrJ9+I+jaGOG9xmzB6+pWcbkPp1+NrDvbDdavzXj1YPf9WsN/phpt3dSdAJKOzYxI+QYQVOH3+AWgxelzvJdvOiEKEwSPOWp1rfMaTEgvYQlZcWNiEojNYdibO2rqiBloKXH7+zVTsnEbx1hZGJmQvoVrb25ot7C78iLfiqkzgoPgEYysODKw0a2eP5HNPQJAggbFX4v15CV15jJC/V0OjErIN90Qmk=
+  file: "/cas-overlay/cas.war"
+  on:
+    repo: pp-spaces/cas-overlay-template
