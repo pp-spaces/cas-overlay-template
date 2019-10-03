@@ -13,7 +13,18 @@ RUN mkdir -p ~/.gradle \
     && chmod 750 ./gradlew \
     && ./gradlew --version;
 
-RUN cd cas-overlay \
+WORKDIR /cas-overlay
+
+# RUN echo "Download CAS Shell" \
+#     && ./gradlew downloadShell
+
+# RUN echo "List CAS Template Views" \
+#     && ./gradlew listTemplateViews
+
+# RUN echo "Unzip CAS Web Application" \
+#     && ./gradlew explodeWar
+
+RUN echo "Build CAS" \
     && ./gradlew clean build --parallel;
 
 FROM adoptopenjdk/openjdk11:alpine-jre AS cas
