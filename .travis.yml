@@ -73,7 +73,7 @@ jobs:
         - git config --local user.name "$GIT_USER_NAME"
         - git config --local user.email "GIT_USER_EMAIL"
         # Set up Release tag
-        - CAS_VERSION=$(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
+        - CAS_VERSION=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
         - export TRAVIS_TAG=$CAS_VERSION-$(git log --format=%h -1)
         # Build application
         - ./gradlew clean build --parallel
