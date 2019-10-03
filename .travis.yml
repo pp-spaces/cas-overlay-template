@@ -63,11 +63,13 @@ jobs:
       name: Build & Push Docker Image
       script:
         - "./docker-build.sh"
-        - docker images
+        - "docker images"
         - "./docker-push.sh"
     - stage: deploy
       name: "Deploy to GitHub Release"
-      script: "./gradlew clean build --parallel"
+      script:
+        - "./gradlew clean build --parallel"
+        - "ls -la"
       before_deploy:
         - TRAVIS_TAG=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
         - TRAVIS_TAG_DATE=$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
