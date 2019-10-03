@@ -74,8 +74,7 @@ jobs:
         - git config --local user.email "GIT_USER_EMAIL"
         # Set up Release tag
         - CAS_VERSION=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
-        - CAS_BUILD_DATE=$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
-        - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+        - export TRAVIS_TAG=${TRAVIS_TAG:-$CAS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
         # Build application
         - ./gradlew clean build --parallel
         - git tag "$CAS_VERSION-$TRAVIS_TAG"
