@@ -75,9 +75,13 @@ jobs:
         # Set up git user name and tag this commit
         - git config --local user.name "$GIT_USER_NAME"
         - git config --local user.email "GIT_USER_EMAIL"
+        # Commit ID and Build Date
+        - COMMIT_ID="$(git log --format=%h -1)"
+        # %H%M%S
+        - BUILD_DATE=$(date +'%Y%m%d')
         # Set up Release tag
         - CAS_VERSION=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
-        - export TRAVIS_TAG=$CAS_VERSION-$(git log --format=%h -1)
+        - export TRAVIS_TAG="$CAS_VERSION-$BUILD_DATE-$COMMIT_ID"
         # Build application
         - ./gradlew clean build --parallel
         - git tag $TRAVIS_TAG
