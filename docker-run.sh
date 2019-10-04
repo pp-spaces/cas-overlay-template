@@ -1,11 +1,16 @@
 #!/bin/bash
 
-image_org=${DOCKER_ORG:-org.apereo.cas}
-image_version=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
-image_tag="$image_org/cas:$image_version"
+DOCKER_ORG=${DOCKER_ORG:-org.apereo.cas}
 
+IMAGE_NAME="$DOCKER_ORG/cas"
+IMAGE_VERSION=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
+
+IMAGE_TAG="$IMAGE_NAME:$IMAGE_VERSION"
+
+echo "Cleaning up existing container..."
 docker stop cas > /dev/null 2>&1
 docker rm cas > /dev/null 2>&1
 
-docker run -d -p 8080:8080 -p 8443:8443 --name="cas" $image_tag
-docker logs -f cas
+echo "Running new CAS container..."
+docker run -d -p 8080:8080 -p 8443:8443 --name="cas" $IMAGE_TAG \
+    && docker logs -f cas

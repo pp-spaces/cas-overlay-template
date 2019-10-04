@@ -1,14 +1,17 @@
 #!/bin/bash
 
-docker_user=${DOCKER_AUTH_USER}
-docker_psw=${DOCKER_AUTH_PASSWORD}
+DOCKER_ORG=${DOCKER_ORG:-org.apereo.cas}
+DOCKER_AUTH_USER=${DOCKER_AUTH_USER}
+DOCKER_AUTH_PASSWORD=${DOCKER_AUTH_PASSWORD}
 
-echo "$docker_psw" | docker login --username "$docker_user" --password-stdin
+IMAGE_NAME="$DOCKER_ORG/cas"
+IMAGE_VERSION=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
 
-image_org=${DOCKER_ORG:-org.apereo.cas}
-image_version=(`cat gradle.properties | grep "cas.version" | cut -d= -f2`)
-image_tag="$image_org/cas:$image_version"
+IMAGE_TAG="$IMAGE_NAME:$IMAGE_VERSION"
 
-echo "Pushing CAS docker image tagged as $image_version to $image_org/cas..."
-docker push "$image_tag" \
-	&& echo "Pushed $image_tag successfully.";
+echo "Authenticating to Docker Hub..."
+echo "$DOCKER_AUTH_PASSWORD" | docker login --username "$DOCKER_AUTH_USER" --password-stdin
+
+echo "Pushing CAS docker image tagged as $IMAGE_VERSION to $IMAGE_NAME..."
+docker push "$IMAGE_TAG" \
+	&& echo "Pushed $IMAGE_TAG successfully.";
