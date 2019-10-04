@@ -15,3 +15,13 @@ echo "$DOCKER_AUTH_PASSWORD" | docker login --username "$DOCKER_AUTH_USER" --pas
 echo "Pushing CAS docker image tagged as $IMAGE_VERSION to $IMAGE_NAME..."
 docker push "$IMAGE_TAG" \
 	&& echo "Pushed $IMAGE_TAG successfully.";
+
+# Build Latest release if CAS version is not Release Candidate
+if ! echo "$IMAGE_VERSION" | grep -q "RC"; then
+  IMAGE_TAG="$IMAGE_NAME:latest"
+
+  echo "Push latest release..."
+
+  docker push "$IMAGE_TAG" \
+	&& echo "Pushed $IMAGE_TAG successfully.";
+fi
