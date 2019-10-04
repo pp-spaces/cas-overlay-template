@@ -44,15 +44,15 @@ jobs:
       script:
         "./gradlew clean build --stacktrace --no-daemon --refresh-dependencies
         -Dorg.gradle.internal.http.socketTimeout=600000 -Dorg.gradle.internal.http.connectionTimeout=600000"
-    - stage: validate
-      name: Download CAS Shell
-      script: "./gradlew downloadShell"
-    - stage: validate
-      name: List CAS Template Views
-      script: "./gradlew listTemplateViews"
-    - stage: validate
-      name: Unzip CAS Web Application
-      script: "./gradlew explodeWar"
+    # - stage: validate
+    #   name: Download CAS Shell
+    #   script: "./gradlew downloadShell"
+    # - stage: validate
+    #   name: List CAS Template Views
+    #   script: "./gradlew listTemplateViews"
+    # - stage: validate
+    #   name: Unzip CAS Web Application
+    #   script: "./gradlew explodeWar"
     - stage: docker
       name: Build Docker Image via Jib
       script: "./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies"
