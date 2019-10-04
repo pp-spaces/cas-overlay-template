@@ -24,7 +24,7 @@ repositories {
     maven { url "https://repo.spring.io/milestone/" }
     maven { url "https://repo.spring.io/snapshot/" }
     maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
-    maven { url "https://repo1.maven.org/maven2/org/apereo/cas" }
+    maven { url "https://repo1.maven.org/maven2" }
 }
 
 def casServerVersion = project.'cas.version'
