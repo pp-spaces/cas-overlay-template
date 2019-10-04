@@ -1,6 +1,7 @@
 # CAS Overlay Template
 
 [![Build Status](https://travis-ci.com/pp-spaces/cas-overlay-template.svg?branch=master)](https://travis-ci.com/pp-spaces/cas-overlay-template)
+[![Docker Hub](https://img.shields.io/microbadger/image-size/ppspaces/cas)](https://hub.docker.com/r/ppspaces/cas)
 
 Generic CAS WAR overlay to exercise the latest versions of CAS. This overlay could be freely used as a starting template for local CAS war overlays.
 
