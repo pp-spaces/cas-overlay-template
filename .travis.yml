@@ -55,12 +55,12 @@ jobs:
     #   name: Unzip CAS Web Application
     #   script: "./gradlew explodeWar"
     ##################################################
-    - stage: docker
-      name: Build Docker Image via Jib
-      script: "./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies"
-    - stage: docker
-      name: Build Docker Image via Docker Compose
-      script: docker-compose build
+    # - stage: docker
+    #   name: Build Docker Image via Jib
+    #   script: "./gradlew build jibDockerBuild --stacktrace --no-daemon --refresh-dependencies"
+    # - stage: docker
+    #   name: Build Docker Image via Docker Compose
+    #   script: docker-compose build
     - stage: docker
       name: Build & Push Docker Image
       script:
